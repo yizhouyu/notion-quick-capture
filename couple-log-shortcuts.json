@@ -1,7 +1,7 @@
 {
   "version": 90,
   "compatibilityVersion": 90,
-  "title": "Couple Log",
+  "title": "Couple Log v1.8",
   "categories": [
     {
       "id": "c0a80001-0000-4000-8000-000000000001",
@@ -10,7 +10,7 @@
         {
           "id": "c0a80001-0000-4000-8000-000000000011",
           "name": "记一笔",
-          "description": "v1.7 · Maps 分享进来 = 自动 Restaurant;手动点开 = 选 Tag",
+          "description": "Maps 分享进来 = 自动 Restaurant;手动点开 = 选 Tag",
           "iconName": "flat_color_pencil",
           "method": "POST",
           "url": "https://api.notion.com/v1/pages",
@@ -32,7 +32,7 @@
         {
           "id": "c0a80001-0000-4000-8000-000000000013",
           "name": "补一笔",
-          "description": "v1.7 · 同记一笔,但日期用选择器(记住上次选的)",
+          "description": "同记一笔,但日期用选择器(记住上次选的)",
           "iconName": "flat_color_calendar",
           "method": "POST",
           "url": "https://api.notion.com/v1/pages",
