@@ -9,9 +9,9 @@
       "shortcuts": [
         {
           "id": "c0a80001-0000-4000-8000-000000000011",
-          "name": "🍽 记一笔",
-          "description": "从 Maps 分享进来零输入;手动点开则弹一个输入框。Tag 自动 Restaurant",
-          "iconName": "flat_color_star",
+          "name": "记一笔",
+          "description": "Maps 分享进来 = 自动 Restaurant;手动点开 = 选 Tag。确认时可改,Cancel 才放弃",
+          "iconName": "flat_color_pencil",
           "method": "POST",
           "url": "https://api.notion.com/v1/pages",
           "contentType": "application/json",
@@ -25,31 +25,9 @@
               "value": "2022-06-28"
             }
           ],
-          "codeOnPrepare": "var raw = getVariable('shared_input').trim();\nvar lines = raw.split('\\n').map(function(s){return s.trim();}).filter(function(s){return s && s.indexOf('http') !== 0;});\nvar name = (lines.length > 0 ? lines[0] : raw);\nfunction clean(s) {\n  s = s.replace(/https?:\\/\\/\\S+/g, '');\n  s = s.replace(/\\s*[-–—·|:,]?\\s*Google Maps\\s*$/i, '');\n  s = s.replace(/[\\s\\-–—·|:,]+$/, '');\n  s = s.replace(/^[\\s\\-–—·|:,]+/, '');\n  return s.trim();\n}\nname = clean(name);\nwhile (true) {\n  if (!name) {\n    var redo = prompt('内容不能为空,重新输入:');\n    if (redo === null) { showToast('已取消,未写入'); abort(); }\n    name = redo.trim();\n    continue;\n  }\n  if (confirm('记入 Notion:\\n' + name + '  ·  ' + 'Restaurant' + '  ·  今天')) { break; }\n  var edited = prompt('修改内容(按取消 = 放弃):', name);\n  if (edited === null) { showToast('已取消,未写入'); abort(); }\n  name = edited.trim();\n}\nsetVariable('clean_name', name);",
-          "bodyContent": "{\"parent\":{\"database_id\":\"e1a5ca1e-d63b-4931-b47e-7aea82a5b26d\"},\"properties\":{\"Name\":{\"title\":[{\"text\":{\"content\":\"{{c0a80001-0000-4000-8000-0000000000a7}}\"}}]},\"Date\":{\"date\":{\"start\":\"{{c0a80001-0000-4000-8000-0000000000a5}}\"}},\"Tags\":{\"multi_select\":[{\"name\":\"Restaurant\"}]}}}",
-          "codeOnSuccess": "var page = JSON.parse(response.body);\nif (page && page.url) {\n  if (confirm('已记入 ✓  打开 Notion 查看?')) {\n    try { openUrl(page.url, 'notion.id'); }\n    catch (e) { openUrl(page.url); }\n  } else { showToast('已记入 ✓'); }\n} else { showToast('已记入 ✓'); }"
-        },
-        {
-          "id": "c0a80001-0000-4000-8000-000000000012",
-          "name": "📝 其他",
-          "description": "非餐厅的少数情况:多一步选 tag",
-          "iconName": "flat_color_rocket",
-          "method": "POST",
-          "url": "https://api.notion.com/v1/pages",
-          "contentType": "application/json",
-          "headers": [
-            {
-              "key": "Authorization",
-              "value": "Bearer {{c0a80001-0000-4000-8000-0000000000a1}}"
-            },
-            {
-              "key": "Notion-Version",
-              "value": "2022-06-28"
-            }
-          ],
-          "codeOnPrepare": "var raw = getVariable('shared_input').trim();\nvar lines = raw.split('\\n').map(function(s){return s.trim();}).filter(function(s){return s && s.indexOf('http') !== 0;});\nvar name = (lines.length > 0 ? lines[0] : raw);\nfunction clean(s) {\n  s = s.replace(/https?:\\/\\/\\S+/g, '');\n  s = s.replace(/\\s*[-–—·|:,]?\\s*Google Maps\\s*$/i, '');\n  s = s.replace(/[\\s\\-–—·|:,]+$/, '');\n  s = s.replace(/^[\\s\\-–—·|:,]+/, '');\n  return s.trim();\n}\nname = clean(name);\nwhile (true) {\n  if (!name) {\n    var redo = prompt('内容不能为空,重新输入:');\n    if (redo === null) { showToast('已取消,未写入'); abort(); }\n    name = redo.trim();\n    continue;\n  }\n  if (confirm('记入 Notion:\\n' + name + '  ·  ' + getVariable('activity_tag') + '  ·  今天')) { break; }\n  var edited = prompt('修改内容(按取消 = 放弃):', name);\n  if (edited === null) { showToast('已取消,未写入'); abort(); }\n  name = edited.trim();\n}\nsetVariable('clean_name', name);",
-          "bodyContent": "{\"parent\":{\"database_id\":\"e1a5ca1e-d63b-4931-b47e-7aea82a5b26d\"},\"properties\":{\"Name\":{\"title\":[{\"text\":{\"content\":\"{{c0a80001-0000-4000-8000-0000000000a7}}\"}}]},\"Date\":{\"date\":{\"start\":\"{{c0a80001-0000-4000-8000-0000000000a5}}\"}},\"Tags\":{\"multi_select\":[{\"name\":\"{{c0a80001-0000-4000-8000-0000000000a3}}\"}]}}}",
-          "codeOnSuccess": "var page = JSON.parse(response.body);\nif (page && page.url) {\n  if (confirm('已记入 ✓  打开 Notion 查看?')) {\n    try { openUrl(page.url, 'notion.id'); }\n    catch (e) { openUrl(page.url); }\n  } else { showToast('已记入 ✓'); }\n} else { showToast('已记入 ✓'); }"
+          "codeOnPrepare": "var raw = getVariable('shared_input').trim();\nvar fromShare = /https?:\\/\\//.test(raw);\nvar lines = raw.split('\\n').map(function(s){return s.trim();}).filter(function(s){return s && s.indexOf('http') !== 0;});\nvar name = (lines.length > 0 ? lines[0] : raw);\nfunction clean(s) {\n  s = s.replace(/https?:\\/\\/\\S+/g, '');\n  s = s.replace(/\\s*[-–—·|:,]?\\s*Google Maps\\s*$/i, '');\n  s = s.replace(/[\\s\\-–—·|:,]+$/, '');\n  s = s.replace(/^[\\s\\-–—·|:,]+/, '');\n  return s.trim();\n}\nname = clean(name);\nvar tag;\nif (fromShare) {\n  tag = 'Restaurant';\n} else {\n  tag = showSelection(['Restaurant','Outdoors','Travel','Home','Exhibition','Show','Shops','Social','Concert','Study','Cafe'], 'Tag');\n  if (tag === null) { showToast('已取消,未写入'); abort(); }\n}\nwhile (true) {\n  if (!name) {\n    var redo = prompt('内容不能为空,重新输入:');\n    if (redo === null) { showToast('已取消,未写入'); abort(); }\n    name = redo.trim();\n    continue;\n  }\n  if (confirm('记入 Notion:\\n' + name + '  ·  ' + tag + '  ·  今天')) { break; }\n  var edited = prompt('修改内容(按取消 = 放弃):', name);\n  if (edited === null) { showToast('已取消,未写入'); abort(); }\n  name = edited.trim();\n}\nsetVariable('clean_name', name);\nsetVariable('clean_tag', tag);",
+          "codeOnSuccess": "var page = JSON.parse(response.body);\nif (page && page.url) {\n  if (confirm('已记入 ✓  打开 Notion 查看?')) {\n    try { openUrl(page.url, 'notion.id'); }\n    catch (e) { openUrl(page.url); }\n  } else { showToast('已记入 ✓'); }\n} else { showToast('已记入 ✓'); }",
+          "bodyContent": "{\"parent\":{\"database_id\":\"e1a5ca1e-d63b-4931-b47e-7aea82a5b26d\"},\"properties\":{\"Name\":{\"title\":[{\"text\":{\"content\":\"{{c0a80001-0000-4000-8000-0000000000a7}}\"}}]},\"Date\":{\"date\":{\"start\":\"{{c0a80001-0000-4000-8000-0000000000a5}}\"}},\"Tags\":{\"multi_select\":[{\"name\":\"{{c0a80001-0000-4000-8000-0000000000a8}}\"}]}}}"
         }
       ]
     }
@@ -80,10 +58,10 @@
       "jsonEncode": true
     },
     {
-      "id": "c0a80001-0000-4000-8000-0000000000a3",
-      "key": "activity_tag",
-      "type": "select",
-      "data": "{\"labels\": [\"Outdoors\", \"Travel\", \"Home\", \"Exhibition\", \"Show\", \"Shops\", \"Social\", \"Concert\", \"Study\", \"Cafe\"], \"values\": [\"Outdoors\", \"Travel\", \"Home\", \"Exhibition\", \"Show\", \"Shops\", \"Social\", \"Concert\", \"Study\", \"Cafe\"], \"multi_select\": \"false\", \"separator\": \",\"}",
+      "id": "c0a80001-0000-4000-8000-0000000000a8",
+      "key": "clean_tag",
+      "type": "constant",
+      "value": "Restaurant",
       "jsonEncode": true
     },
     {
