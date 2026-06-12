@@ -69,7 +69,8 @@
       "type": "text",
       "title": "记一笔",
       "message": "干了什么?",
-      "isShareText": true
+      "isShareText": true,
+      "isShareTitle": true
     },
     {
       "id": "c0a80001-0000-4000-8000-0000000000a7",
