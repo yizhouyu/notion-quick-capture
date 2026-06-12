@@ -2,12 +2,12 @@
 
 我们俩的「What we've done together」三秒记录工具。手机主屏一键 → 入 Notion,零服务器,手机直连 Notion API。
 
-## 两个按钮
+## 一个按钮:记一笔 ✏️
 
-| 按钮 | 用法 | Tag |
+| 入口 | 行为 | Tag |
 |------|------|-----|
-| 🍽 记一笔 | 日常主入口。从 Google Maps Share 进来 = 零输入(自动抽店名);手动点开 = 弹框说一句 | 自动 Restaurant |
-| 📝 其他 | 非餐厅的少数情况 | 单选菜单(库里真实用过的 10 个) |
+| Google Maps → Share → HTTP Shortcuts | 零输入,自动抽店名 | 自动 Restaurant |
+| 主屏手动点开 | 弹框说一句 | 单选菜单(库里真实用过的 11 个) |
 
 每次提交前有确认弹窗(Cancel 可改内容或放弃);成功后可一键打开刚写入的 Notion 页面;空内容不会写入。
 
@@ -19,7 +19,7 @@
    https://raw.githubusercontent.com/yizhouyu/notion-quick-capture/main/couple-log-shortcuts.json
    ```
 3. **填 token**:⋮ → Variables → `notion_token` → 粘贴 token(见下方「token 在哪」)
-4. **上主屏**:长按 🍽 记一笔 → Place on home screen(📝 其他 可选)
+4. **上主屏**:长按 记一笔 → Place on home screen
 
 ## Token 在哪 / 忘了怎么办
 
