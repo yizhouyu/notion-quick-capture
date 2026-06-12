@@ -1,30 +1,37 @@
 # notion-quick-capture
 
-Three-second activity logging to a Notion database from your Android home screen. No server, no middleman — your phone talks straight to the Notion API.
+我们俩的「What we've done together」三秒记录工具。手机主屏一键 → 入 Notion,零服务器,手机直连 Notion API。
 
-把「我们去了哪/吃了什么」三秒记进 Notion:主屏一键 → 说一句话 → 入库。零服务器,手机直连 Notion API。
+## 两个按钮
 
-## How it works
+| 按钮 | 用法 | Tag |
+|------|------|-----|
+| 🍽 记一笔 | 日常主入口。从 Google Maps Share 进来 = 零输入(自动抽店名);手动点开 = 弹框说一句 | 自动 Restaurant |
+| 📝 其他 | 非餐厅的少数情况 | 单选菜单(库里真实用过的 10 个) |
 
-[HTTP Shortcuts](https://play.google.com/store/apps/details?id=ch.rmy.android.http_shortcuts) (open-source Android app) + a config file ([`couple-log-shortcuts.json`](couple-log-shortcuts.json)) that defines two buttons:
+每次提交前有确认弹窗(Cancel 可改内容或放弃);成功后可一键打开刚写入的 Notion 页面;空内容不会写入。
 
-- **🍽 餐厅打卡** — one tap, type/dictate the restaurant name, optional note, done (Tag auto-set to Restaurant)
-- **📝 记一笔** — same, plus a single-select tag menu (Outdoors / Travel / Show / …)
+## 安装(每台手机一次,~5 分钟)
 
-Date is auto-filled with today. The Notion token lives only as a **device-local secret variable** — the config file contains no secrets and never exports your token.
+1. **装 app**:Play Store 搜 **HTTP Shortcuts**(作者 Waboodoo,开源)
+2. **导入配置**:app 主界面右上 ⋮ → Import / Export → **Import from URL**,粘贴:
+   ```
+   https://raw.githubusercontent.com/yizhouyu/notion-quick-capture/main/couple-log-shortcuts.json
+   ```
+3. **填 token**:⋮ → Variables → `notion_token` → 粘贴 token(见下方「token 在哪」)
+4. **上主屏**:长按 🍽 记一笔 → Place on home screen(📝 其他 可选)
 
-## Setup (~5 min)
+## Token 在哪 / 忘了怎么办
 
-1. Create a Notion integration at [notion.so/my-integrations](https://www.notion.so/my-integrations) and connect it to **only** the target database (least privilege — the token can't touch anything else)
-2. Install HTTP Shortcuts, then import the config — either from URL (raw link of `couple-log-shortcuts.json`) or via this one-tap deep link from your phone:
-   `https://http-shortcuts.rmy.ch/import?url=<url-encoded raw link>`
-3. In the app: Variables → `notion_token` → paste your token
-4. Edit the `database_id` in both shortcuts' request bodies to your own database (schema: `Name` title / `Date` date / `Tags` multi-select / `Comments` rich text)
-5. Add the two shortcuts to your home screen
+- Token 是 Notion 的 integration secret(`ntn_` 开头),在 **[notion.so/my-integrations](https://www.notion.so/my-integrations)** → 点开 `quick-capture` 那个 integration → Configuration → **Internal Integration Secret** → Show / Copy
+- **忘了或泄露了**:同一页面可以 **Refresh** 生成新 secret(旧的立即作废),然后在两台手机的 app → Variables → `notion_token` 里换成新值
+- **第一次建**:New integration → workspace 选书单/数据库所在的那个 → 建完后,去 Notion 里「What we've done together」页面 → 右上 ⋯ → **Connections** → 添加这个 integration(**只连这一个页面**,最小权限:手机丢了也只暴露这一个库)
+- 注意:Mac 上 `~/.config/notion/token` 是另一个**全量权限** token(Claude 数据搬运用),和手机这个不是同一个,不要混用
 
-## Staying up to date
+## 改配置 / 更新
 
-In the app, enable **Automatic Import** (merge mode) pointed at the raw config URL — every device pulls config updates automatically. Tokens are unaffected (they're local variables).
+配置文件无任何密钥(token 只存在手机本地变量里),改动直接 push 本 repo。手机端:重新 Import from URL(merge 模式,token 不丢);或在 app 里开 **Automatic Import** 指向上面的 URL,以后自动同步。
 
----
-Built with Claude Code. 🤖
+## Notion 端 schema
+
+数据库 `What we've done together`:`Name`(title)/ `Date`(date,自动今天)/ `Tags`(multi-select)/ `Comments`(rich text,工具不填,要补去 Notion 补)。
