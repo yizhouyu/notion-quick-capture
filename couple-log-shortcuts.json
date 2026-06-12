@@ -1,0 +1,78 @@
+{
+  "version": 90,
+  "compatibilityVersion": 90,
+  "title": "Couple Log",
+  "categories": [
+    {
+      "id": "c0a80001-0000-4000-8000-000000000001",
+      "name": "Couple Log",
+      "shortcuts": [
+        {
+          "id": "c0a80001-0000-4000-8000-000000000011",
+          "name": "🍽 餐厅打卡",
+          "iconName": "flat_color_star",
+          "method": "POST",
+          "url": "https://api.notion.com/v1/pages",
+          "contentType": "application/json",
+          "headers": [
+            { "key": "Authorization", "value": "Bearer {{c0a80001-0000-4000-8000-0000000000a1}}" },
+            { "key": "Notion-Version", "value": "2022-06-28" }
+          ],
+          "bodyContent": "{\"parent\":{\"database_id\":\"e1a5ca1e-d63b-4931-b47e-7aea82a5b26d\"},\"properties\":{\"Name\":{\"title\":[{\"text\":{\"content\":\"{{c0a80001-0000-4000-8000-0000000000a2}}\"}}]},\"Date\":{\"date\":{\"start\":\"{{c0a80001-0000-4000-8000-0000000000a5}}\"}},\"Tags\":{\"multi_select\":[{\"name\":\"Restaurant\"}]},\"Comments\":{\"rich_text\":[{\"text\":{\"content\":\"{{c0a80001-0000-4000-8000-0000000000a4}}\"}}]}}}"
+        },
+        {
+          "id": "c0a80001-0000-4000-8000-000000000012",
+          "name": "📝 记一笔",
+          "iconName": "flat_color_rocket",
+          "method": "POST",
+          "url": "https://api.notion.com/v1/pages",
+          "contentType": "application/json",
+          "headers": [
+            { "key": "Authorization", "value": "Bearer {{c0a80001-0000-4000-8000-0000000000a1}}" },
+            { "key": "Notion-Version", "value": "2022-06-28" }
+          ],
+          "bodyContent": "{\"parent\":{\"database_id\":\"e1a5ca1e-d63b-4931-b47e-7aea82a5b26d\"},\"properties\":{\"Name\":{\"title\":[{\"text\":{\"content\":\"{{c0a80001-0000-4000-8000-0000000000a2}}\"}}]},\"Date\":{\"date\":{\"start\":\"{{c0a80001-0000-4000-8000-0000000000a5}}\"}},\"Tags\":{\"multi_select\":[{\"name\":\"{{c0a80001-0000-4000-8000-0000000000a3}}\"}]},\"Comments\":{\"rich_text\":[{\"text\":{\"content\":\"{{c0a80001-0000-4000-8000-0000000000a4}}\"}}]}}}"
+        }
+      ]
+    }
+  ],
+  "variables": [
+    {
+      "id": "c0a80001-0000-4000-8000-0000000000a1",
+      "key": "notion_token",
+      "type": "constant",
+      "value": "",
+      "isSecret": true,
+      "isExcludeValueFromExport": true
+    },
+    {
+      "id": "c0a80001-0000-4000-8000-0000000000a2",
+      "key": "activity_name",
+      "type": "text",
+      "title": "记一笔",
+      "message": "干了什么?(店名 / 地点 / 事项)",
+      "jsonEncode": true
+    },
+    {
+      "id": "c0a80001-0000-4000-8000-0000000000a3",
+      "key": "activity_tag",
+      "type": "select",
+      "data": "{\"labels\":[\"Restaurant\",\"Outdoors\",\"Travel\",\"Home\",\"Exhibition\",\"Show\",\"Shops\",\"Social\",\"Concert\",\"Cafe\",\"Study\"],\"values\":[\"Restaurant\",\"Outdoors\",\"Travel\",\"Home\",\"Exhibition\",\"Show\",\"Shops\",\"Social\",\"Concert\",\"Cafe\",\"Study\"],\"multi_select\":\"false\",\"separator\":\",\"}",
+      "jsonEncode": true
+    },
+    {
+      "id": "c0a80001-0000-4000-8000-0000000000a4",
+      "key": "activity_comment",
+      "type": "text",
+      "title": "备注",
+      "message": "和谁 / 什么场合(可留空)",
+      "jsonEncode": true
+    },
+    {
+      "id": "c0a80001-0000-4000-8000-0000000000a5",
+      "key": "today",
+      "type": "timestamp",
+      "data": "{\"format\":\"yyyy-MM-dd\"}"
+    }
+  ]
+}
