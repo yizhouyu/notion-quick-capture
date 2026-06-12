@@ -80,7 +80,7 @@
       "id": "c0a80001-0000-4000-8000-0000000000a3",
       "key": "activity_tag",
       "type": "select",
-      "data": "{\"labels\": [\"Show\", \"Exhibition\", \"Shops\", \"Outdoors\", \"Travel\", \"Social\", \"Concert\", \"Home\"], \"values\": [\"Show\", \"Exhibition\", \"Shops\", \"Outdoors\", \"Travel\", \"Social\", \"Concert\", \"Home\"], \"multi_select\": \"false\", \"separator\": \",\"}",
+      "data": "{\"labels\": [\"Outdoors\", \"Travel\", \"Home\", \"Exhibition\", \"Show\", \"Shops\", \"Social\", \"Concert\", \"Study\", \"Cafe\"], \"values\": [\"Outdoors\", \"Travel\", \"Home\", \"Exhibition\", \"Show\", \"Shops\", \"Social\", \"Concert\", \"Study\", \"Cafe\"], \"multi_select\": \"false\", \"separator\": \",\"}",
       "jsonEncode": true
     },
     {
