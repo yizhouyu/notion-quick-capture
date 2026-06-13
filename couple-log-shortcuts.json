@@ -1,7 +1,7 @@
 {
   "version": 90,
   "compatibilityVersion": 90,
-  "title": "Couple Log v1.8",
+  "title": "Couple Log v1.9",
   "categories": [
     {
       "id": "c0a80001-0000-4000-8000-000000000001",
@@ -47,7 +47,7 @@
               "value": "2022-06-28"
             }
           ],
-          "codeOnPrepare": "var raw = getVariable('shared_input').trim();\nvar fromShare = /https?:\\/\\//.test(raw);\nvar lines = raw.split('\\n').map(function(s){return s.trim();}).filter(function(s){return s && s.indexOf('http') !== 0;});\nvar name = (lines.length > 0 ? lines[0] : raw);\nfunction clean(s) {\n  s = s.replace(/https?:\\/\\/\\S+/g, '');\n  s = s.replace(/\\s*[-–—·|:,]?\\s*Google Maps\\s*$/i, '');\n  s = s.replace(/[\\s\\-–—·|:,]+$/, '');\n  s = s.replace(/^[\\s\\-–—·|:,]+/, '');\n  return s.trim();\n}\nname = clean(name);\nwhile (!name) {\n  var redo = prompt('内容不能为空,重新输入:');\n  if (redo !== null && redo.trim()) { name = redo.trim(); break; }\n  var keep = showSelection({'retry': '✏️ 重新输入', 'drop': '🗑 放弃,不写入'});\n  if (keep === 'drop') { showToast('已取消,未写入'); abort(); }\n}\nvar when = getVariable('backfill_date');\nvar tag;\nif (fromShare) {\n  tag = 'Restaurant';\n} else {\n  tag = showSelection(['Restaurant','Outdoors','Travel','Home','Exhibition','Show','Shops','Social','Concert','Study','Cafe'], 'Tag');\n  if (tag === null) { showToast('已取消,未写入'); abort(); }\n}\nwhile (true) {\n  if (confirm('记入 Notion:\\n' + name + ' · ' + tag + ' · ' + when)) { break; }\n  var choice = showSelection({'edit': '✏️ 修改内容', 'drop': '🗑 放弃,不写入'});\n  if (choice === 'drop') { showToast('已取消,未写入'); abort(); }\n  if (choice === 'edit') {\n    var edited = prompt('修改内容:', name);\n    if (edited !== null && edited.trim()) { name = edited.trim(); }\n  }\n}\nsetVariable('clean_name', name);\nsetVariable('clean_tag', tag);",
+          "codeOnPrepare": "var raw = getVariable('backfill_input').trim();\nvar fromShare = /https?:\\/\\//.test(raw);\nvar lines = raw.split('\\n').map(function(s){return s.trim();}).filter(function(s){return s && s.indexOf('http') !== 0;});\nvar name = (lines.length > 0 ? lines[0] : raw);\nfunction clean(s) {\n  s = s.replace(/https?:\\/\\/\\S+/g, '');\n  s = s.replace(/\\s*[-–—·|:,]?\\s*Google Maps\\s*$/i, '');\n  s = s.replace(/[\\s\\-–—·|:,]+$/, '');\n  s = s.replace(/^[\\s\\-–—·|:,]+/, '');\n  return s.trim();\n}\nname = clean(name);\nwhile (!name) {\n  var redo = prompt('内容不能为空,重新输入:');\n  if (redo !== null && redo.trim()) { name = redo.trim(); break; }\n  var keep = showSelection({'retry': '✏️ 重新输入', 'drop': '🗑 放弃,不写入'});\n  if (keep === 'drop') { showToast('已取消,未写入'); abort(); }\n}\nvar when = (getVariable('backfill_date') + '').trim();\nif (!when || when.length !== 10 || when.charAt(4) !== '-' || when.charAt(7) !== '-') { showToast('请选择日期,未写入'); abort(); }\nvar tag;\nif (fromShare) {\n  tag = 'Restaurant';\n} else {\n  tag = showSelection(['Restaurant','Outdoors','Travel','Home','Exhibition','Show','Shops','Social','Concert','Study','Cafe'], 'Tag');\n  if (tag === null) { showToast('已取消,未写入'); abort(); }\n}\nwhile (true) {\n  if (confirm('记入 Notion:\\n' + name + ' · ' + tag + ' · ' + when)) { break; }\n  var choice = showSelection({'edit': '✏️ 修改内容', 'drop': '🗑 放弃,不写入'});\n  if (choice === 'drop') { showToast('已取消,未写入'); abort(); }\n  if (choice === 'edit') {\n    var edited = prompt('修改内容:', name);\n    if (edited !== null && edited.trim()) { name = edited.trim(); }\n  }\n}\nsetVariable('clean_name', name);\nsetVariable('clean_tag', tag);",
           "codeOnSuccess": "var page = JSON.parse(response.body);\nif (page && page.url) {\n  if (confirm('已记入 ✓  打开 Notion 查看?')) {\n    try { openUrl(page.url, 'notion.id'); }\n    catch (e) { openUrl(page.url); }\n  } else { showToast('已记入 ✓'); }\n} else { showToast('已记入 ✓'); }",
           "bodyContent": "{\"parent\":{\"database_id\":\"e1a5ca1e-d63b-4931-b47e-7aea82a5b26d\"},\"properties\":{\"Name\":{\"title\":[{\"text\":{\"content\":\"{{c0a80001-0000-4000-8000-0000000000a7}}\"}}]},\"Date\":{\"date\":{\"start\":\"{{c0a80001-0000-4000-8000-0000000000a9}}\"}},\"Tags\":{\"multi_select\":[{\"name\":\"{{c0a80001-0000-4000-8000-0000000000a8}}\"}]}}}"
         }
@@ -68,6 +68,15 @@
       "key": "shared_input",
       "type": "text",
       "title": "记一笔",
+      "message": "干了什么?",
+      "isShareText": true,
+      "isShareTitle": true
+    },
+    {
+      "id": "c0a80001-0000-4000-8000-0000000000aa",
+      "key": "backfill_input",
+      "type": "text",
+      "title": "补一笔",
       "message": "干了什么?",
       "isShareText": true,
       "isShareTitle": true
